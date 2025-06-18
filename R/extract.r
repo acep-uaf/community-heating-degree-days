@@ -1,33 +1,37 @@
-download_and_unzip <- function(zip_url, dir, remove_zip = F) {
-  filename <- basename(zip_url)
-  destfile <- file.path(dir, filename)
+download_file <- function(url, dest_dir, overwrite = TRUE) {
+  filename <- basename(url)
+  destfile <- file.path(dest_dir, filename)
 
-  if (dir.exists(dir)) {
-    unlink(dir, recursive = T, force = T)
-    message(yellow(paste("Deleted existing directory:", dir)))
+  if (overwrite && file.exists(destfile)) {
+    unlink(destfile, force = TRUE)
+    message(yellow(paste("Deleted existing file:", destfile)))
   }
 
-  if (!dir.exists(dir)) {
-    dir.create(dir, recursive = T)
+  if (!dir.exists(dest_dir)) {
+    dir.create(dest_dir, recursive = TRUE)
   }
 
-  message(paste("Downloading file from", zip_url))
   tryCatch({
-    download.file(zip_url, destfile = destfile, mode = "wb")
-    message(green(paste("Downloaded file to:", destfile)))
-
-    unzip(destfile, exdir = dir)
-    message(green(paste("Unzipped contents to:", dir)))
-
-    if (remove_zip) {
-      unlink(destfile)
-      message(blue(paste("Removed ZIP file:", destfile)))
-    }
-
+    download.file(url, destfile = destfile, mode = "wb")
   }, error = function(e) {
-    message(red(paste("Failed to download or unzip:", e$message)))
+    message(red(paste("Failed to download:", e$message)))
   })
 
+  return(destfile)
 }
 
 
+
+unzip_file <- function(zip_path, exdir, remove_zip = FALSE) {
+  tryCatch({
+    unzip(zip_path, exdir = exdir)
+    message(green(paste("Unzipped contents to:", exdir)))
+
+    if (remove_zip) {
+      unlink(zip_path)
+      message(blue(paste("Removed ZIP file:", zip_path)))
+    }
+  }, error = function(e) {
+    message(red(paste("Failed to unzip:", e$message)))
+  })
+}
