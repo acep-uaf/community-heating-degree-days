@@ -1,2 +1,4 @@
 *.zip
 *.tif
+
+.DS_Store
