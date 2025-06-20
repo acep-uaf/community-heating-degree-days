@@ -16,9 +16,6 @@ aedg_communities_url <- "https://github.com/acep-aedg/aedg-data-pond/raw/refs/he
 # aedg communities
 download_file(aedg_communities_url, 'data/aedg', overwrite = T)
 
-# # snap heating degree days
-# zip_path <- download_file(snap_hdd_url, "data/snap", overwrite = T)
-# unzip_file(zip_path, exdir = "data/snap", remove_zip = TRUE)
 
 # subset fips_code and coordinates from AEDG communities
 subset_fips_and_coords('data/aedg/communities.geojson', 'data/aedg/communities_coordinates.geojson')
