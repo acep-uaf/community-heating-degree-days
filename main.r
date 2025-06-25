@@ -12,14 +12,16 @@ source(file = 'R/transform.r')
 snap_hdd_url <- "http://data.snap.uaf.edu/data/Base/AK_WRF/Arctic_EDS_degree_days/heating_degree_days.zip" 
 aedg_communities_url <- "https://github.com/acep-aedg/aedg-data-pond/raw/refs/heads/main/data/final/communities.geojson"
 
-
-# aedg communities
-download_file(aedg_communities_url, 'data/aedg', overwrite = T)
-
+# download AEDG communities data
+download_file(
+  aedg_communities_url, 
+  'data/aedg', 
+  overwrite = T)
 
 # subset fips_code and coordinates from AEDG communities
-subset_fips_and_coords('data/aedg/communities.geojson', 'data/aedg/communities_coordinates.geojson')
-
+subset_fips_and_coords(
+  'data/aedg/communities.geojson', 
+  'data/aedg/communities_coordinates.geojson')
 
 # pull HDD data for all AEDG communities
 download_and_save_degree_days(
@@ -31,7 +33,8 @@ download_and_save_degree_days(
   summarized = T
 )
 
-
-hdd_json_to_csv(hdd_json = 'data/snap/heating_degree_days.json',
+# convert json output to csv
+hdd_json_to_csv(
+  hdd_json = 'data/snap/heating_degree_days.json',
   out_csv = 'data/snap/heating_degree_days.csv')
   
